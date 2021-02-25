@@ -71,6 +71,9 @@ class Horse extends ChessBoard {
     }
 
     captureKing() {
+        console.log(`%cHorse at: ${this.initialHorsePosition}`, "color:orange;font-size:16px");
+        console.log(`%cking at: ${this.targetPosition}`, "color:orange;font-size:16px");
+
         while (!this.targetCaptured) {
             let moves = Object.keys(this.trace[this.depthKey]);
             let temp = {};

@@ -85,10 +85,8 @@ class Horse extends ChessBoard {
             this.depthKey++;
             this.trace[this.depthKey] = { ...temp };
         }
-
+        
         console.log("%cTarget Captured", "color:green;font-size:18px");
-
-
         let traceBackKey = this.targetPosition;
         const path = [];
         for (let i = this.depthKey; i >= 0; i--) {
@@ -100,8 +98,6 @@ class Horse extends ChessBoard {
     }
 
 }
-
 const horseRef = new Horse('A1', 'G7');
 horseRef.captureKing();
-
 console.log("This final trace reference", horseRef.trace);

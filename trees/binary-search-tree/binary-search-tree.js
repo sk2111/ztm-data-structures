@@ -19,8 +19,6 @@ class Node {
 class BinarySearchTree {
     constructor() {
         this.root = null;
-        this.left = null;
-        this.right = null;
     }
     insert(value) {
         const newNode = new Node(value);
@@ -47,6 +45,9 @@ class BinarySearchTree {
                     currentNode = currentNode.right;
                 }
             }
+            else{
+                return this;
+            }
         }
     }
     search(value) {
@@ -71,7 +72,7 @@ class BinarySearchTree {
     getNodeByValue(value) {
 
         let currentNode = this.root;
-        let parentNode = currentNode;
+        let parentNode = null;
         while (currentNode) {
             if (currentNode.value === value) {
                 return [parentNode, currentNode];
@@ -88,32 +89,32 @@ class BinarySearchTree {
         return [null, null];
     }
 
-    inOrderTraversal(node,arr){
-        if(node === null){
-            return ;
+    inOrderTraversal(node, arr) {
+        if (node === null) {
+            return;
         }
-        this.inOrderTraversal(node.left,arr);
+        this.inOrderTraversal(node.left, arr);
         arr.push(node.value);
-        this.inOrderTraversal(node.right,arr);
+        this.inOrderTraversal(node.right, arr);
         return arr;
     }
 
-    preOrderTraversal(node,arr){
-        if(node === null){
-            return ;
+    preOrderTraversal(node, arr) {
+        if (node === null) {
+            return;
         }
         arr.push(node.value);
-        this.inOrderTraversal(node.left,arr);
-        this.inOrderTraversal(node.right,arr);
+        this.inOrderTraversal(node.left, arr);
+        this.inOrderTraversal(node.right, arr);
         return arr;
     }
 
-    postOrderTraversal(node,arr){
-        if(node === null){
-            return ;
+    postOrderTraversal(node, arr) {
+        if (node === null) {
+            return;
         }
-        this.inOrderTraversal(node.left,arr);
-        this.inOrderTraversal(node.right,arr);
+        this.inOrderTraversal(node.left, arr);
+        this.inOrderTraversal(node.right, arr);
         arr.push(node.value);
         return arr;
     }
@@ -129,17 +130,21 @@ class BinarySearchTree {
         console.log("Test node To delete", nodeToDelete);
         // base condition
         if (parentNode === null && nodeToDelete === null) {
-            return this;
+            return null;
         }
 
         // condition 1 - delete leaf node 
         // leaf node delete
         // set parent left or right pointer to null on value match
         if (nodeToDelete.left === null && nodeToDelete.right === null) {
-            if (parentNode.left.value === nodeToDelete.value) {
+            if (parentNode === null) {
+                this.root = null;
+                return this;
+            }
+            else if (parentNode.left?.value === nodeToDelete.value) {
                 parentNode.left = null;
             }
-            else if (parentNode.right.value === nodeToDelete.value) {
+            else if (parentNode.right?.value === nodeToDelete.value) {
                 parentNode.right = null;
             }
         }
@@ -151,25 +156,27 @@ class BinarySearchTree {
         //and take out that value and replace the delete node
 
         else if (nodeToDelete.left !== null && nodeToDelete.right !== null) {
-
             // Inorder predecesser method
-            let leftMaxParentNode = nodeToDelete.left;
-            let leftMaxNode = leftMaxParentNode;
+            let leftMaxNode = nodeToDelete.left;
             while (leftMaxNode.right) {
-                leftMaxParentNode = leftMaxNode;
                 leftMaxNode = leftMaxNode.right;
             }
-            //break last min node (since inorder predeccessor take right)
-            leftMaxParentNode.right = null;
-            //move min node to delete node position
-            leftMaxNode.right = nodeToDelete.right;
+            // after finiding inorder predecessor delete it 
+            this.delete(leftMaxNode.value);
+            // Take out the node as a left max precedessor 
+            // point left and right pointers to leftMax Node
             leftMaxNode.left = nodeToDelete.left;
-            nodeToDelete.right = null;
-            nodeToDelete.left = null;
-            // Point delete Node parent to new moved node
-            parentNode.left = leftMaxNode;
-            //console.log("two node delete min parent node", minParentNode);
-            //console.log("two node delete minNode", minNode);
+            leftMaxNode.right = nodeToDelete.right;
+            // copy the max predecessor to nodeToDelete
+            if(parentNode === null){
+                this.root = leftMaxNode;
+            }
+            else if(parentNode.left?.value === nodeToDelete.value){
+                parentNode.left = leftMaxNode;
+            }
+            else if(parentNode.right?.value === nodeToDelete.value){
+                parentNode.right = leftMaxNode;
+            }
         }
 
 
@@ -177,10 +184,14 @@ class BinarySearchTree {
         // point parent right or left to delete node right or left whichever has meaningful value
         else if (nodeToDelete.left !== null || nodeToDelete.right !== null) {
             const singleChildRef = nodeToDelete.left ?? nodeToDelete.right;
-            if (parentNode.left.value === nodeToDelete.value) {
+            if (parentNode === null) {
+                this.root = singleChildRef;
+                return this;
+            }
+            else if (parentNode.left?.value === nodeToDelete.value) {
                 parentNode.left = singleChildRef;
             }
-            else if (parentNode.right.value === nodeToDelete.value) {
+            else if (parentNode.right?.value === nodeToDelete.value) {
                 parentNode.right = singleChildRef;
             }
         }
@@ -200,21 +211,32 @@ bstTree
     .insert(8)
     .insert(7)
     .insert(9)
+    .insert(8.5)
     .insert(15)
     .insert(3)
     .insert(16)
     .insert(14)
     .insert(2)
 
-console.log(`%cSearch Value 10 ${bstTree.search(10)}`);
-console.log(`%cSearch Value 14 ${bstTree.search(14)}`);
+// bstTree
+//     .insert(1)
+//     .insert(2)
+//     .insert(3)
+
+
+//console.log(`%cSearch Value 10 ${bstTree.search(10)}`);
+//console.log(`%cSearch Value 14 ${bstTree.search(14)}`);
 
 // console.log("delete test value 3\n", bstTree.delete(3));
 // console.log("delete test value 4 \n", bstTree.delete(4));
 // console.log("delete test value 5 \n", bstTree.delete(5))
-//console.log("delete test value 4 \n", bstTree.delete(4));
+console.log("Tree", bstTree);
+// console.log("delete test value 1 \n", bstTree.delete(1));
+console.log("delete test value 13 \n", bstTree.delete(13));
+console.log("delete test value 4 \n", bstTree.delete(4));
 
 
-console.log("Inorder",bstTree.inOrderTraversal(bstTree.root,[]));
-console.log("preorder",bstTree.preOrderTraversal(bstTree.root,[]));
-console.log("postorder",bstTree.postOrderTraversal(bstTree.root,[]));
+console.log("Inorder", bstTree.inOrderTraversal(bstTree.root, []));
+console.log("preorder", bstTree.preOrderTraversal(bstTree.root, []));
+console.log("postorder", bstTree.postOrderTraversal(bstTree.root, []));
+console.log("Tree", bstTree);

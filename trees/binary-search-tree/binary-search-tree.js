@@ -234,6 +234,7 @@ console.log("Tree", bstTree);
 // console.log("delete test value 1 \n", bstTree.delete(1));
 console.log("delete test value 13 \n", bstTree.delete(13));
 console.log("delete test value 4 \n", bstTree.delete(4));
+console.log("delete test value 15 \n", bstTree.delete(15));
 
 
 console.log("Inorder", bstTree.inOrderTraversal(bstTree.root, []));

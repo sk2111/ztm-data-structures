@@ -45,7 +45,7 @@ class BinarySearchTree {
                     currentNode = currentNode.right;
                 }
             }
-            else{
+            else {
                 return this;
             }
         }
@@ -168,13 +168,13 @@ class BinarySearchTree {
             leftMaxNode.left = nodeToDelete.left;
             leftMaxNode.right = nodeToDelete.right;
             // copy the max predecessor to nodeToDelete
-            if(parentNode === null){
+            if (parentNode === null) {
                 this.root = leftMaxNode;
             }
-            else if(parentNode.left?.value === nodeToDelete.value){
+            else if (parentNode.left?.value === nodeToDelete.value) {
                 parentNode.left = leftMaxNode;
             }
-            else if(parentNode.right?.value === nodeToDelete.value){
+            else if (parentNode.right?.value === nodeToDelete.value) {
                 parentNode.right = leftMaxNode;
             }
         }
@@ -199,6 +199,53 @@ class BinarySearchTree {
         return this;
 
     }
+
+    stackInOrderTraversal(node) {
+
+        const stack = [];
+        const test = [];
+        let currentNode = node;
+        while (currentNode) {
+            stack.push(currentNode);
+            currentNode = currentNode.left;
+        }
+
+        while (stack.length) {
+
+            const node = stack.pop();
+
+            if (node.right) {
+                stack.push(node.right);
+                let currentNode = node.right.left;
+                while (currentNode) {
+                    stack.push(currentNode);
+                    currentNode = currentNode.left;
+                }
+            }
+
+            test.push(node.value);
+        }
+
+        console.log("Testing stacking instace", stack, test);
+    }
+
+    simplefiedInOrder(root) {
+
+        let currentNode = root;
+        const stack = [];
+        const test = [];
+        while (currentNode || stack.length) {
+            while (currentNode) {
+                stack.push(currentNode);
+                currentNode = currentNode.left;
+            }
+            currentNode = stack.pop();
+            test.push(currentNode.value);
+            currentNode = currentNode.right;
+        }
+
+        console.log("Simplified test", test);
+    }
 }
 
 
@@ -214,9 +261,18 @@ bstTree
     .insert(8.5)
     .insert(15)
     .insert(3)
+    .insert(3.5)
     .insert(16)
     .insert(14)
     .insert(2)
+    .insert(1)
+    .insert(2.5)
+    .insert(2.4)
+    .insert(2.3)
+    .insert(2.6)
+    .insert(2.7)
+    .insert(2.52)
+    .insert(13.5)
 
 // bstTree
 //     .insert(1)
@@ -230,15 +286,16 @@ bstTree
 // console.log("delete test value 3\n", bstTree.delete(3));
 // console.log("delete test value 4 \n", bstTree.delete(4));
 // console.log("delete test value 5 \n", bstTree.delete(5))
-console.log("Tree", bstTree);
+//console.log("Tree", bstTree);
 // console.log("delete test value 1 \n", bstTree.delete(1));
-console.log("delete test value 13 \n", bstTree.delete(13));
+//console.log("delete test value 13 \n", bstTree.delete(13));
 //console.log("delete test value 4 \n", bstTree.delete(4));
 //console.log("delete test value 15 \n", bstTree.delete(15));
 
 
 console.log("Inorder", bstTree.inOrderTraversal(bstTree.root, []));
-console.log("preorder", bstTree.preOrderTraversal(bstTree.root, []));
-console.log("postorder", bstTree.postOrderTraversal(bstTree.root, []));
+bstTree.stackInOrderTraversal(bstTree.root,);
+bstTree.simplefiedInOrder(bstTree.root,);
+
 
 console.log("Tree", bstTree);

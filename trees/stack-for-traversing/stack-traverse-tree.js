@@ -104,8 +104,8 @@ class BinarySearchTree {
             return;
         }
         arr.push(node.value);
-        this.inOrderTraversal(node.left, arr);
-        this.inOrderTraversal(node.right, arr);
+        this.preOrderTraversal(node.left, arr);
+        this.preOrderTraversal(node.right, arr);
         return arr;
     }
 
@@ -113,8 +113,8 @@ class BinarySearchTree {
         if (node === null) {
             return;
         }
-        this.inOrderTraversal(node.left, arr);
-        this.inOrderTraversal(node.right, arr);
+        this.postOrderTraversal(node.left, arr);
+        this.postOrderTraversal(node.right, arr);
         arr.push(node.value);
         return arr;
     }
@@ -209,11 +209,8 @@ class BinarySearchTree {
             stack.push(currentNode);
             currentNode = currentNode.left;
         }
-
         while (stack.length) {
-
             const node = stack.pop();
-
             if (node.right) {
                 stack.push(node.right);
                 let currentNode = node.right.left;
@@ -245,6 +242,24 @@ class BinarySearchTree {
         }
 
         console.log("Simplified test", test);
+    }
+
+    simpliedPreorder(root) {
+
+        let currentNode = root;
+        const test = [];
+        const stack = [];
+
+        while (stack.length || currentNode) {
+            while (currentNode) {
+                test.push(currentNode.value);
+                stack.push(currentNode);
+                currentNode = currentNode.left;
+            }
+            currentNode = stack.pop();
+            currentNode = currentNode.right;
+        }
+        console.log(test);
     }
 }
 
@@ -295,7 +310,8 @@ bstTree
 
 console.log("Inorder", bstTree.inOrderTraversal(bstTree.root, []));
 bstTree.stackInOrderTraversal(bstTree.root,);
-bstTree.simplefiedInOrder(bstTree.root,);
-
-
-console.log("Tree", bstTree);
+//bstTree.simplefiedInOrder(bstTree.root,);
+//console.log("Tree", bstTree);
+console.log("------------------------------------------------------------")
+console.log("preorder", bstTree.preOrderTraversal(bstTree.root, []));
+console.log("simplied preorder", bstTree.simpliedPreorder(bstTree.root, []));

@@ -261,6 +261,34 @@ class BinarySearchTree {
         }
         console.log(test);
     }
+
+    samplePostOrder(root) {
+        let currentNode = root;
+        const test = [];
+        const stack = [];
+        const visitedSet = new Set();
+
+        while (stack.length || currentNode) {
+            while (currentNode) {
+                stack.push(currentNode);
+                currentNode = currentNode.left;
+            }
+            currentNode = stack.pop();
+
+            if (currentNode.right && !visitedSet.has(currentNode.value)) {
+                visitedSet.add(currentNode.value);
+                stack.push(currentNode);
+                currentNode = currentNode.right;
+            }
+            else{
+                visitedSet.delete(currentNode.value);
+                test.push(currentNode.value);
+                currentNode = null;
+            }
+        }
+
+        console.log("sample postorder",test);
+    }
 }
 
 
@@ -289,10 +317,14 @@ bstTree
     .insert(2.52)
     .insert(13.5)
 
-// bstTree
-//     .insert(1)
-//     .insert(2)
-//     .insert(3)
+//  bstTree
+//     .insert(100)
+//     .insert(50)
+//     .insert(200)
+//     .insert(10)
+//     .insert(60)
+//     .insert(150)
+//     .insert(300)
 
 
 //console.log(`%cSearch Value 10 ${bstTree.search(10)}`);
@@ -315,3 +347,7 @@ bstTree.stackInOrderTraversal(bstTree.root,);
 console.log("------------------------------------------------------------")
 console.log("preorder", bstTree.preOrderTraversal(bstTree.root, []));
 console.log("simplied preorder", bstTree.simpliedPreorder(bstTree.root, []));
+console.log("------------------------------------------------------------")
+console.log("postorder", bstTree.postOrderTraversal(bstTree.root, []));
+console.log("postorder", bstTree.samplePostOrder(bstTree.root, []));
+//console.log("simplied postorder", bstTree.simpliedPreorder(bstTree.root, []));

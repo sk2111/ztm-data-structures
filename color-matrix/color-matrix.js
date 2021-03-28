@@ -33,6 +33,34 @@ class ColorMatrix {
         }
     }
 
+    iterativeColorMatrix(colorCode, newColorCode, posX, posY, n, m, range) {
+
+        const stack = [];
+        const matrix = this.generateMatrix(n, m, range);
+        this.printMatrix(matrix, n, m);
+
+        if (matrix[posX][posY] === colorCode) {
+            stack.push({ posX, posY });
+        }
+
+        while (stack.length) {
+            const { posX, posY } = stack.pop();
+            if (matrix[posX] && matrix[posX][posY] === colorCode) {
+                matrix[posX][posY] = newColorCode;
+            }
+
+            if (matrix[posX + 1] && matrix[posX + 1][posY - 1] === colorCode) stack.push({ posX: posX + 1, posY: posY - 1 });
+            if (matrix[posX + 1] && matrix[posX + 1][posY] === colorCode) stack.push({ posX: posX + 1, posY: posY });
+            if (matrix[posX + 1] && matrix[posX + 1][posY + 1] === colorCode) stack.push({ posX: posX + 1, posY: posY + 1 });
+            if (matrix[posX] && matrix[posX][posY - 1] === colorCode) stack.push({ posX: posX, posY: posY - 1 });
+            if (matrix[posX] && matrix[posX][posY + 1] === colorCode) stack.push({ posX: posX, posY: posY + 1 });
+            if (matrix[posX - 1] && matrix[posX - 1][posY + 1] === colorCode) stack.push({ posX: posX - 1, posY: posY + 1 });
+            if (matrix[posX - 1] && matrix[posX - 1][posY] === colorCode) stack.push({ posX: posX - 1, posY: posY });
+            if (matrix[posX - 1] && matrix[posX - 1][posY - 1] === colorCode) stack.push({ posX: posX - 1, posY: posY - 1 });
+        }
+        console.log("Final iterative solution", matrix)
+    }
+
     recursiveColor(matrix, colorCode, newColorCode, posX, posY) {
         if (matrix[posX] === undefined || matrix[posX][posY] !== colorCode) {
             return null;
@@ -54,7 +82,7 @@ class ColorMatrix {
 
     colorMe(colorCode, newColorCode, posX, posY, n, m, range) {
         const matrix = this.generateMatrix(n, m, range);
-        this.printMatrix(matrix,n,m);
+        this.printMatrix(matrix, n, m);
         this.recursiveColor(matrix, colorCode, newColorCode, posX, posY);
 
         console.log("Print the matrix", matrix);
@@ -63,4 +91,5 @@ class ColorMatrix {
 
 const colorMatrix = new ColorMatrix();
 
-colorMatrix.colorMe(1, 3, 0, 0, 4, 4, { start: 0, end: 4 });
+//colorMatrix.colorMe(1, 3, 0, 0, 4, 4, { start: 0, end: 4 });
+colorMatrix.iterativeColorMatrix(1, 3, 0, 0, 4, 4, { start: 0, end: 4 });
